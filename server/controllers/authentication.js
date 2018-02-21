@@ -1,5 +1,15 @@
+const jwt = require('jwt-simple');
+const config = require('../config');
 const User = require('../models/user');
 // we reference the User model here to check and/or create into the db the email and password that the user inputs
+
+function tokenForUser(user) {
+    const timestamp = new Date().getTime();
+    return jwt.encode({ sub: user.id, iat: timestamp }, config.secret);
+    // as a convention, json web tokens have a 'sub' property
+    // 'sub' is short for 'subject'
+    // similarly, 'iat' is another subproperty of json web tokens, which stands for 'issued at time'
+}
 
 exports.signup = function(req, res, next) {
     const email = req.body.email;
@@ -31,7 +41,7 @@ exports.signup = function(req, res, next) {
                 return next(err);
             }
             // respond to request indicating the user was created
-            res.json({ success: true });
+            res.json({ token: tokenForUser(user) });
         });
     });
 
