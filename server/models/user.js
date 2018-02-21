@@ -13,4 +13,4 @@ const modelClass = mongoose.model('user', userSchema);
 // represents all users rather than one specific user
 
 // export the model
-module.exports = ModelClass;
+module.exports = modelClass;
