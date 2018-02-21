@@ -33,6 +33,17 @@ userSchema.pre('save', function(next) {
     });
 });
 
+userSchema.methods.comparePassword = function(candidatePassword, callback) {
+    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
+        if (err) {
+            return callback(err);
+        }
+        callback(null, isMatch);
+    });
+}
+// so...in the above block, bcrypt encrypts what the user inputs into the password login field and compares that to the stored password
+// for the email that the user inputted (if the email exists in the db)
+
 // create the model class
 const modelClass = mongoose.model('user', userSchema);
 // represents all users rather than one specific user
