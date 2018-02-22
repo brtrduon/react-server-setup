@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const app = express();
 const router = require('./router');
 const mongoose = require('mongoose');
+const cors = require('cors');
 
 // db setup
 mongoose.connect('mongodb://localhost/auth');
@@ -17,8 +18,10 @@ app.use(morgan('combined'));
 // we will be using 'morgan' for debugging
 app.use(bodyParser.json({ type: '*/*' }));
 // 'bodyParser is used to parse incoming requests, specifically into json
+app.use(cors());
+// we use cors to prevent errors to be thrown if a request is coming from a different port (since we are using a different port than our server for our client)
 
-// 'morgan' and 'bodyParser' are considered to be 'middleware' in express
+// 'morgan', 'bodyParser', and 'cors' are considered to be 'middleware' in express
 // middleware in express is something that any incoming request is going to be passed into
 router(app);
 
